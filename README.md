@@ -26,6 +26,23 @@ Sistem nota internal untuk penjualan alat kesehatan dengan desain monokrom minim
 
 ```bash
 npm install
+```
+
+### Environment Variables
+
+1. Salin file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+
+2. Isi environment variables di file `.env`:
+```
+VITE_SUPABASE_URL=your_supabase_url_here
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+```
+
+3. Jalankan development server:
+```bash
 npm run dev
 ```
 
@@ -98,9 +115,59 @@ Website menggunakan tema monokrom dengan:
 - Password dienkripsi oleh Supabase Auth
 - Validasi input di frontend dan backend
 
+## Deploy ke Vercel
+
+### Langkah-langkah:
+
+1. **Push project ke GitHub** (jika belum)
+
+2. **Import project ke Vercel**:
+   - Login ke [vercel.com](https://vercel.com)
+   - Klik "Add New Project"
+   - Import repository GitHub Anda
+
+3. **Set Environment Variables di Vercel**:
+   - Di Vercel project settings, buka tab "Environment Variables"
+   - Tambahkan 2 environment variables berikut:
+     ```
+     VITE_SUPABASE_URL = https://lmukflfrgekbqjorhgtc.supabase.co
+     VITE_SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxtdWtmbGZyZ2VrYnFqb3JoZ3RjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1MDMyMjYsImV4cCI6MjA3NjA3OTIyNn0.VORPqvjZaz177r8CSo81-PNMw_WERX2NdAPY7uBMMck
+     ```
+   - Pastikan environment type di-set ke **Production**, **Preview**, dan **Development**
+
+4. **Deploy**:
+   - Klik "Deploy"
+   - Tunggu proses build selesai
+
+5. **Akses aplikasi**:
+   - Buka URL yang diberikan oleh Vercel
+   - Login dengan PIN user yang sudah dibuat
+
+### Troubleshooting Layar Putih di Vercel:
+
+Jika aplikasi menampilkan layar putih setelah deploy:
+
+1. **Periksa Environment Variables**:
+   - Pastikan `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` sudah terset
+   - Vercel memerlukan prefix `VITE_` untuk environment variables yang bisa diakses di client-side
+
+2. **Periksa Build Logs**:
+   - Buka Vercel dashboard → Project → Deployments → Klik deployment terakhir
+   - Lihat build logs untuk error
+
+3. **Periksa Browser Console**:
+   - Buka aplikasi di browser
+   - Tekan F12 untuk membuka Developer Tools
+   - Lihat tab Console untuk error messages
+
+4. **Redeploy**:
+   - Setelah mengatur environment variables, trigger redeploy dengan:
+     - Push perubahan baru ke GitHub, atau
+     - Klik "Redeploy" di Vercel dashboard
+
 ## Notes
 
 - File `supabase-migration.sql` berisi semua query SQL yang diperlukan
-- Data dummy 15 produk alat kesehatan sudah termasuk dalam migration
 - Storage bucket untuk gambar produk sudah dikonfigurasi
 - Sistem tracking stok otomatis saat nota dibuat
+- Aplikasi menggunakan autentikasi custom dengan PIN (bukan Supabase Auth)
