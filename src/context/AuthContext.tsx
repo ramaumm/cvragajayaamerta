@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getCurrentUser, AppUser } from '../lib/auth';
+import { getCurrentUser, signOut, AppUser } from '../lib/auth';
+import { supabase } from '../lib/supabase';
 
 interface AuthContextType {
   user: AppUser | null;
@@ -33,6 +34,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     refreshUser();
     setLoading(false);
+
+    const interval = setInterval(async () => {
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        const { data, error } = await supabase
+          .from('app_users')
+          .select('id')
+          .eq('id', currentUser.id)
+          .maybeSingle();
+
+        if (error || !data) {
+          await signOut();
+          setUser(null);
+          window.location.reload();
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (

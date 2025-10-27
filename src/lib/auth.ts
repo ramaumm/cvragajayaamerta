@@ -25,17 +25,17 @@ export const loginWithPin = async (pin: string): Promise<AppUser> => {
     .update({ last_login: new Date().toISOString() })
     .eq('id', data.id);
 
-  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(data));
+  sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(data));
 
   return data;
 };
 
 export const signOut = async () => {
-  localStorage.removeItem(CURRENT_USER_KEY);
+  sessionStorage.removeItem(CURRENT_USER_KEY);
 };
 
 export const getCurrentUser = (): AppUser | null => {
-  const userData = localStorage.getItem(CURRENT_USER_KEY);
+  const userData = sessionStorage.getItem(CURRENT_USER_KEY);
   if (!userData) return null;
 
   try {
