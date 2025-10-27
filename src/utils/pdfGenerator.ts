@@ -355,7 +355,7 @@ export const generateInvoicePDF = async (transaction: Transaction) => {
   doc.setTextColor(0, 0, 0);
   doc.text('CV Raga Jaya Amerta', leftSignX, signatureY + 20.5, { align: 'center' });
   doc.setFontSize(7);
-  doc.setFont('helvetica', 'normal');
+  doc.setFont('helvetica', 'bold');
   doc.setTextColor(0, 0, 0);
   doc.text(transaction.customer_name, rightSignX, signatureY + 20.5, { align: 'center' });
 
